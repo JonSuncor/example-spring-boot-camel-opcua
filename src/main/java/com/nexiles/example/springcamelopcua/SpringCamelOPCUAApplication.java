@@ -17,6 +17,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Slf4j
 @SpringBootApplication
 @EnableConfigurationProperties
@@ -58,13 +62,25 @@ class OPCUARouteBuilder extends RouteBuilder {
      * <p/>
      * This is a central method for RouteBuilder implementations to implement
      * the routes using the Java fluent builder syntax.
-     *
      */
     @Override
     public void configure() {
         log.debug("Configuring route for endpoint: {}", config.getEndpoint());
 
-        from(config.getEndpoint()).routeId("Test Route")
+        List<String> nodeHeaders = new ArrayList<>();
+//        nodeHeaders.add("node=RAW(i=2258)");
+
+        nodeHeaders.add("node=RAW(ns=12;s=DipperLoad)");
+        nodeHeaders.add("node=RAW(ns=13;s=DipperLoad)");
+        nodeHeaders.add("node=RAW(ns=14;s=DipperLoad)");
+        nodeHeaders.add("node=RAW(ns=15;s=DipperLoad)");
+        nodeHeaders.add("node=RAW(ns=16;s=DipperLoad)");
+        nodeHeaders.add("node=RAW(ns=19;s=DipperLoad)");
+        nodeHeaders.add("node=RAW(ns=20;s=DipperLoad)");
+
+        log.info("Adding route: ");
+        from(config.getEndpoint()).routeId("Test Route ")
+                .setHeader("CamelMiloNodeIds", constant(Arrays.asList(nodeHeaders)))
                 .process(exchange -> {
                     String routeId = exchange.getFromRouteId();
                     DataValue data = exchange.getIn().getBody(DataValue.class);
@@ -72,6 +88,5 @@ class OPCUARouteBuilder extends RouteBuilder {
                             routeId,
                             data.getStatusCode().toString(), data.getValue().getValue());
                 });
-
     }
 }

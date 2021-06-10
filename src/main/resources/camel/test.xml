@@ -9,9 +9,9 @@
         xmlns="http://camel.apache.org/schema/spring"
         xsi:schemaLocation="http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-    <route id="test">
-        <from uri="milo-client:tcp://127.0.0.1:12686/example?node=RAW(ns=2;s=HelloWorld/ScalarTypes/Double)&amp;samplingInterval=100" />
-        <log message="${body.value}" />
-    </route>
+<!--    <route id="test">-->
+<!--        <from uri="milo-client:tcp://10.114.220.141:21381/?samplingInterval=100" />-->
+<!--        <log message="${body.value}" />-->
+<!--    </route>-->
 
 </routes>
